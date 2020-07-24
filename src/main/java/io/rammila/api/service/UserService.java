@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,13 @@ public class UserService {
 
     public User save(User user) {
         log.info("user save :{} ", user);
+        if (!ObjectUtils.isEmpty(user.getId())) {
+            Optional<User> users = userRepository.findById(user.getId());
+            users.get().setFirstName(user.getFirstName());
+            users.get().setFullName(user.getLastName());
+            users.get().setFullName(user.getFullName());
+            return userRepository.save(users.get());
+        }
         return userRepository.save(user);
     }
 
@@ -49,9 +57,6 @@ public class UserService {
             log.info("Invalid Credential..");
             throw new UsernameNotFoundException("Invalid Credential..");
         }
-       /* RammilaUser rammilaUser = new RammilaUser(user.get().getId(),user.get().getMobile(), user.get().getFirstName(),
-                user.get().getLastName(),user.get().getFullName(),);
-        plugoUser = getUserRole(plugoUser);*/
         return getUserRole(user.get());
     }
 
@@ -77,10 +82,12 @@ public class UserService {
                 .build();
         return userMapper;
     }
+
     public User findUserByMobile(String mobile) {
         Optional<User> user = userRepository.findByMobile(mobile);
         return user.orElse(null);
     }
+
     public List<String> getUserRoleForAuthFilter(UUID userId) {
 
         List<UserRole> userRoles = userRoleRepository.findAllByUserId(userId);

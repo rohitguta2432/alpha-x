@@ -1,9 +1,7 @@
-
 package io.rammila.api.service;
 
 import io.rammila.api.mapper.UserMapper;
 import io.rammila.api.model.AuthToken;
-import io.rammila.api.model.RammilaUser;
 import io.rammila.api.model.User;
 import io.rammila.api.repository.AuthTokenRepository;
 import io.rammila.api.utility.TokenUtils;
@@ -32,7 +30,7 @@ public class AuthService {
 
     public UserMapper generateAuthToken(User user) {
         Map<String, Object> dataMap = new HashMap<>();
-        UserMapper userDetails =  userService.loadUserByMobileAndPassword(user.getMobile(), user.getPassword());
+        UserMapper userDetails = userService.loadUserByMobileAndPassword(user.getMobile(), user.getPassword());
 
         AuthToken authenticationToken = this.getAuthTokenByUserId(userDetails.getId());
         String token = "";
@@ -48,8 +46,6 @@ public class AuthService {
             token = authenticationToken.getToken();
         }
         userDetails.setToken(token);
-       /* dataMap.put(Constants.AUTH_TOKEN, token);
-        dataMap.put(Constants.USER, plugoUser);*/
         return userDetails;
     }
 
@@ -67,6 +63,7 @@ public class AuthService {
 
         return authenticationToken;
     }
+
     public AuthToken save(AuthToken authenticationToken) {
 
         if (authenticationToken == null) {
@@ -91,6 +88,7 @@ public class AuthService {
         }
         return authTokenRepository.save(authenticationToken);
     }
+
     public boolean deleteAuthenticationToken(UUID userId) {
 
         if (StringUtils.isEmpty(userId)) {
