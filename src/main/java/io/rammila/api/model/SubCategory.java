@@ -3,6 +3,7 @@ package io.rammila.api.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Entity
@@ -30,16 +28,20 @@ public class SubCategory {
     @Column(unique = true)
     private String name;
     private String description;
-    private String isActive;
+    private Boolean isActive;
 
+    @JsonProperty("products")
     @OneToMany(targetEntity = Product.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "sub_category_id",referencedColumnName = "id")
-    /*@JsonManagedReference*/
-    private Set<Product> products = new HashSet<>();
+    private List<Product> products = new ArrayList<>();
 
     @CreatedBy
     private Date createdAt;
     @LastModifiedDate
     private Date updatedAt;
 
+    @PrePersist
+    public void  setIsActive(){
+        this.setIsActive(true);
+    }
 }

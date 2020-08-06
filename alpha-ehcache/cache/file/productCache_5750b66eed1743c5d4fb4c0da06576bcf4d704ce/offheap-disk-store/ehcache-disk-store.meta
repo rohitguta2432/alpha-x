@@ -1,0 +1,4 @@
+#Key and value types
+#Tue Aug 04 15:55:47 IST 2020
+keyType=java.util.UUID
+valueType=io.rammila.api.model.Product

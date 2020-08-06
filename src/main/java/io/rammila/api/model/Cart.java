@@ -1,8 +1,7 @@
 package io.rammila.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,36 +9,34 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+@Builder
 @Data
 @Entity
-@Table(name = "products")
-@EntityListeners({AuditingEntityListener.class})
+@Table(name = "carts")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Product {
+@EntityListeners({AuditingEntityListener.class})
+public class Cart implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String name;
-    private String description;
+    private UUID userId;
     private Boolean isActive;
-    private String imgUrl;
-    private double discount;
-    private double price;
+    //private UUID productId;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    private Product product;
+
     private Long quantity = 0l;
+
     @CreatedDate
     private Date createdAt;
     @LastModifiedDate
     private Date updatedAt;
-
-    @PrePersist
-    public void  setIsActive(){
-        this.setIsActive(true);
-    }
 }
