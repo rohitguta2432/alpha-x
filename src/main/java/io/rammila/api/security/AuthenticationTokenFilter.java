@@ -1,7 +1,7 @@
 package io.rammila.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.rammila.api.exception.GlobalException;
+import io.rammila.api.exception.AlphaException;
 import io.rammila.api.model.User;
 import io.rammila.api.service.UserService;
 import io.rammila.api.utility.TokenUtils;
@@ -20,9 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.Response;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,7 +68,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 
             } catch (Exception e) {
                 log.error(e.getMessage());
-                throw new GlobalException("Invalid or expired authorization token [" + e.getMessage() + "]");
+                throw new AlphaException("Invalid or expired authorization token [" + e.getMessage() + "]");
             }
         }
         chain.doFilter(request, response);

@@ -4,9 +4,9 @@ import io.rammila.api.model.Category;
 import io.rammila.api.repository.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -16,7 +16,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Transactional
+    @Cacheable("categorys")
     public List<Category> getAllCategory(){
             log.info("fetching all  category ");
         return categoryRepository.findAll();

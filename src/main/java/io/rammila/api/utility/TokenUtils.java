@@ -2,7 +2,7 @@ package io.rammila.api.utility;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.rammila.api.exception.GlobalException;
+import io.rammila.api.exception.AlphaException;
 import io.rammila.api.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,11 +25,11 @@ public class TokenUtils {
             if(!ObjectUtils.isEmpty(claims)){
                 mobile = claims.getSubject();
             }else{
-                throw new GlobalException(String.format("Invalid or expired authorization token : %s",
+                throw new AlphaException(String.format("Invalid or expired authorization token : %s",
                         token));
             }
         } catch (Exception e) {
-            throw new GlobalException(String.format("Invalid or expired authorization token : %s",
+            throw new AlphaException(String.format("Invalid or expired authorization token : %s",
                     token));
         }
         return mobile;

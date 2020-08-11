@@ -27,16 +27,34 @@ public class Cart implements Serializable {
     private UUID id;
     private UUID userId;
     private Boolean isActive;
-    //private UUID productId;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     private Long quantity = 0l;
+
+    @Transient
+    private Double totalPricePerQuantity;
+
+    @Transient
+    private Double totalPrice;
+
+    @Transient
+    private Double totalPriceAfterTax;
+
+    @Transient
+    private Double tax;
+
 
     @CreatedDate
     private Date createdAt;
     @LastModifiedDate
     private Date updatedAt;
+
+    public Double getTotalPricePerQuantity() {
+        Product product = this.product;
+        return product.getPrice() * this.quantity;
+    }
+
 }

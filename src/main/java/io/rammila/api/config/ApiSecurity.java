@@ -1,6 +1,7 @@
 package io.rammila.api.config;
 
-import io.rammila.api.exception.GlobalException;
+
+import io.rammila.api.exception.AlphaException;
 import io.rammila.api.security.AuthenticationTokenFilter;
 import io.rammila.api.security.EntryPointUnauthorizedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,7 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter {
         try {
             return super.authenticationManagerBean();
         } catch (Exception e) {
-            throw new GlobalException(e);
+            throw new AlphaException(e);
         }
     }
 
