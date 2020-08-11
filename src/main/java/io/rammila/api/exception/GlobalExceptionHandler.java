@@ -23,7 +23,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .builder()
                 .timestamp(new Date())
                 .message(ex.getMessage())
-                //.trace(ex.getStackTrace()[0])
+                .trace(ex.getStackTrace()[0])
                 .details(request.getDescription(false))
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value()).build();
         return new ResponseEntity<>(errorDetails,HttpStatus.INTERNAL_SERVER_ERROR);
